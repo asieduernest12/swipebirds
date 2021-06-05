@@ -56,7 +56,7 @@ function countLikes(){
     if( (_likes % 20) == 0)
     console.log(`Number of likes is now:  ${_likes}`);
 
-    if(_likes >= stop_liking_at)
+     if(_likes >= stop_liking_at || !!!document.querySelector('[role=dialog]'))
         stopLiking();
 }
 
