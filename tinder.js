@@ -87,8 +87,6 @@ const observer = new MutationObserver(mutationCallback);
 // Start observing the target node for configured mutations
 observer.observe(targetNode, config);
 
-// Later, you can stop observing
-// observer.disconnect();
 
 startLiking();
 
