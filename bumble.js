@@ -2,7 +2,7 @@ var time_delay = 1000; // 80ms
 var _likes = 0;
 var mytimer = null;
 var stop_liking_at = 500
-var match_percentage = 0.8;
+var match_percentage ;
 var btns_selector_string = "button[type=button][draggable].button.Expand";
 var likebtn_index = 3;
 var nopebtn_index = 1;
@@ -37,7 +37,8 @@ function makeOneLike() {
     };
 }
 
-function startLiking(){
+function startLiking(_match_p = 0.8){
+    match_percentage =_match_p
     stopLiking();
     mytimer = setInterval(makeOneLike(),time_delay)
     

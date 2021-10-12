@@ -2,11 +2,12 @@ var time_delay = 450; // 80ms
 var _likes = 0;
 var mytimer = null;
 var stop_liking_at = 500
-var match_percentage = 0.8;
+var match_percentage ;
 var btns_selector_string = "button[type=button][draggable].button.Expand";
 var likebtn_index = 3;
 var nopebtn_index = 1;
-
+var found_end_card =[];
+var found_text = "";
 
 
 function makeOneLike() {
@@ -35,7 +36,8 @@ function makeOneLike() {
     };
 }
 
-function startLiking(){
+function startLiking(_match_p = 0.8){
+    match_percentage = _match_p
     stopLiking();
     mytimer = setInterval(makeOneLike(),time_delay)
     
@@ -56,10 +58,37 @@ function countLikes(){
     if( (_likes % 20) == 0)
     console.log(`Number of likes is now:  ${_likes}`);
 
-     if(_likes >= stop_liking_at || !!!document.querySelector('[role=dialog]'))
+     if(_likes >= stop_liking_at)
         stopLiking();
 }
 
+// Select the node that will be observed for mutations
+const [targetNode] = document.getElementsByClassName('App__body');
+
+// Options for the observer (which mutations to observe)
+const config = { attributes: true, childList: true, subtree: true };
+
+
+const mutationCallback = (mutation_list,observer)=>{
+
+    found_end_card = Array(...document.querySelectorAll('.keen-slider__slide')).map(n=>n.textContent).filter(n=>n.includes("You're Out of Likes"))
+
+    if (found_end_card.length){
+        console.log('stop liking now',found_end_card);
+        stopLiking();
+        observer.disconnect();
+    }
+}
+
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(mutationCallback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
+
+// Later, you can stop observing
+// observer.disconnect();
 
 startLiking();
 
